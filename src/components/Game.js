@@ -1,10 +1,15 @@
 import React, {useEffect,useState} from 'react';
 import Board from './Board';
+import InfoBoard from './InfoBoard';
 import '../index.css';
 
 const Game = () => {
     const row_line_num = 8;
     const [isNext, setIsNext] = useState(false);
+    const [black_num,setBlackNum] = useState(2);
+    const [white_num,setWhiteNum] = useState(2);
+    
+
 
     //オセロ盤面の初期値
     const [board, setBoard] = useState([
@@ -22,11 +27,12 @@ const Game = () => {
         let first_tmp =board.slice();
         check(first_tmp);
         setBoard(first_tmp);
+        jugement(first_tmp)
         setIsNext(!isNext);
 
     },[])
 
-    
+
     
     //オセロの盤面を押した時の処理
     const handleClick = (y,x) => {
@@ -39,6 +45,7 @@ const Game = () => {
         turnOver(tmp,y,x);
         check(tmp);
         setBoard(tmp);
+        jugement(tmp);
         setIsNext(!isNext);
     }
     
@@ -187,6 +194,38 @@ const Game = () => {
             }
         }   
     }
+    const jugement = (tmp) => {
+        let num =[0,0,0];
+        //黒の石の数の取得
+        
+
+        for(let y=0; y<row_line_num;y++){
+            for(let x=0;x<row_line_num;x++){
+                if(tmp[y][x]===1){//黒の石の数
+                    num[0]++;
+                }else if(tmp[y][x]===2){//白の石の数
+                    num[1]++;
+                }else if(tmp[y][x]===3){
+                    num[2]++;
+                }else{
+
+                }
+            }
+        }
+        console.log(num[0],num[1],num[2]);
+        setBlackNum(num[0]);
+        setWhiteNum(num[1]);
+
+        if(num[2]===0){
+            if(num[0]>num[1]){
+                alert("黒の勝利");
+            }else if(num[0]<num[1]){
+                alert("白の勝利");
+            }else{
+                alert("引き分け");
+            }
+        }
+    }
     
 
     
@@ -197,7 +236,9 @@ const Game = () => {
             <div>
                 <Board board={board} handleClick={handleClick} />
             </div>
-            <div className="game-info">
+                <InfoBoard black_ston_num={black_num} white_stone_num={white_num} next_player={isNext} />
+            <div>
+                
             </div>
         </div>
     )

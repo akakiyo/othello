@@ -2,9 +2,6 @@ import React from 'react';
 import Square from './Square';
 
 const Board = (props) => {
-    const line_num = 8;
-    const count =0;
-    console.log(props.board);
     const renderSquare = (y,x) => {
         return <Square board_num={props.board[y][x]}　onClick={() => props.handleClick(y,x)}></Square>
     }
